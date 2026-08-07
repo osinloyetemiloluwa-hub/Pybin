@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyBin</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>PyBin</h1>
+    <p>Zero-config pastebin</p>
+  </header>
+
+  <section class="card">
+    <textarea id="content" rows="14" placeholder="Paste code or text here..."></textarea>
+    <div class="row">
+      <select id="lang">
+        <option value="text">Plain Text</option>
+        <option value="python">Python</option>
+        <option value="javascript">JavaScript</option>
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+        <option value="sql">SQL</option>
+        <option value="json">JSON</option>
+        <option value="bash">Bash</option>
+      </select>
+      <button onclick="create()">Create Paste</button>
+    </div>
+  </section>
+
+  <div id="toast" class="card toast hidden">
+    <p>Paste created! <a id="link" target="_blank"></a></p>
+    <button class="small" onclick="copyLink()">Copy URL</button>
+  </div>
+
+  <section>
+    <h2>Recent Pastes</h2>
+    <div id="list"></div>
+  </section>
+</div>
+
+<div id="modal" class="modal hidden" onclick="closeModal(event)">
+  <div class="modal-body">
+    <div class="modal-head">
+      <strong id="m-id"></strong> <span id="m-lang"></span>
+      <button class="small" onclick="closeModal()">Close</button>
+    </div>
+    <pre><code id="m-code"></code></pre>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
