@@ -36,36 +36,23 @@ def gen_id(length: int = 8) -> str:
     return "".join(secrets.choice(alphabet) for _ in range(length))
 
 # ── API ──
+from pydantic import BaseModel
+
+class PasteIn(BaseModel):
+    content: str
+    language: str = "text"
+
 @app.post("/api/pastes")
-async def create_paste(content: str = Form(...), language: str = Form("text")):
+async def create_paste(data: PasteIn):
     pid = gen_id()
     now = datetime.utcnow().isoformat()
     with get_db() as conn:
         conn.execute(
             "INSERT INTO pastes (id, content, language, created_at) VALUES (?,?,?,?)",
-            (pid, content, language, now),
+            (pid, data.content, data.language, now),
         )
         conn.commit()
-    return {"id": pid, "content": content, "language": language, "created_at": now}
-
-@app.get("/api/pastes/{paste_id}")
-async def get_paste(paste_id: str):
-    with get_db() as conn:
-        row = conn.execute(
-            "SELECT * FROM pastes WHERE id = ?", (paste_id,)
-        ).fetchone()
-    if not row:
-        raise HTTPException(status_code=404, detail="Paste not found")
-    return dict(row)
-
-@app.get("/api/pastes")
-async def list_pastes(limit: int = 20):
-    with get_db() as conn:
-        rows = conn.execute(
-            "SELECT * FROM pastes ORDER BY created_at DESC LIMIT ?",
-            (limit,),
-        ).fetchall()
-    return [dict(r) for r in rows]
+    return {"id": pid, "content": data.content, "language": data.language, "created_at": now}
 
 # ── Frontend ──
 @app.get("/")
