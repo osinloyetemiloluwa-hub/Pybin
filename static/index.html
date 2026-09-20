@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyBin v5</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>PyBin</h1>
+    <p>Pastebin with Neon PostgreSQL</p>
+  </header>
+
+  <section class="card">
+    <textarea id="content" rows="14" placeholder="Paste code or text here..."></textarea>
+    <div class="row">
+      <select id="lang">
+        <option value="text">Plain Text</option>
+        <option value="python">Python</option>
+        <option value="javascript">JavaScript</option>
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+        <option value="sql">SQL</option>
+        <option value="json">JSON</option>
+        <option value="bash">Bash</option>
+      </select>
+      <button onclick="create()">Create Paste</button>
+    </div>
+  </section>
+
+  <div id="toast" class="card toast hidden">
+    <div>
+      <p>Paste created! <a id="link" target="_blank"></a></p>
+      <p class="token">Delete token: <code id="token"></code> <button class="small" onclick="copyToken()">Copy</button></p>
+    </div>
+    <button class="small" onclick="copyLink()">Copy URL</button>
+  </div>
+
+  <section>
+    <h2>Recent Pastes</h2>
+    <div id="list"></div>
+  </section>
+</div>
+
+<div id="modal" class="modal hidden" onclick="closeModal(event)">
+  <div class="modal-body">
+    <div class="modal-head">
+      <div>
+        <strong id="m-id"></strong> <span id="m-lang"></span>
+        <small id="m-views"></small>
+      </div>
+      <div class="modal-actions">
+        <a id="m-download" class="btn-small" download>Download</a>
+        <button class="small" onclick="copyContent()">Copy</button>
+        <button class="small" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+    <pre><code id="m-code"></code></pre>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
