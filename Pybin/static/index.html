@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PyBin - Pastebin Clone</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-inner">
+      <a href="/" class="logo">Py<span>Bin</span></a>
+      <nav>
+        <a href="/" class="active">New Paste</a>
+        <a href="#recent" onclick="showRecent()">Recent</a>
+        <a href="/api/health" target="_blank">API</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="container">
+
+    <!-- Create Form (like pastebin.com) -->
+    <div id="create-view" class="card">
+      <h2>New Paste</h2>
+
+      <label>Title (optional)</label>
+      <input type="text" id="title" placeholder="My paste" maxlength="200">
+
+      <label>Syntax</label>
+      <select id="syntax">
+        <option value="text">None (plain text)</option>
+        <option value="python">Python</option>
+        <option value="javascript">JavaScript</option>
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+        <option value="sql">SQL</option>
+        <option value="json">JSON</option>
+        <option value="bash">Bash</option>
+        <option value="markdown">Markdown</option>
+        <option value="java">Java</option>
+        <option value="cpp">C++</option>
+        <option value="go">Go</option>
+        <option value="rust">Rust</option>
+        <option value="php">PHP</option>
+        <option value="ruby">Ruby</option>
+      </select>
+
+      <label>Content</label>
+      <textarea id="content" rows="15" placeholder="Paste your text here..." spellcheck="false"></textarea>
+
+      <label>Expiration</label>
+      <select id="expires">
+        <option value="never">Never</option>
+        <option value="10m">10 Minutes</option>
+        <option value="1h">1 Hour</option>
+        <option value="1d">1 Day</option>
+        <option value="1w">1 Week</option>
+        <option value="1M">1 Month</option>
+      </select>
+
+      <button class="btn-primary" onclick="createPaste()" id="create-btn">Create Paste</button>
+    </div>
+
+    <!-- Result (after creating) -->
+    <div id="result-view" class="card hidden">
+      <h2>Paste Created!</h2>
+      <div class="result-box">
+        <p>Your paste URL:</p>
+        <div class="url-row">
+          <input type="text" id="paste-url" readonly>
+          <button class="btn-small" onclick="copyUrl()">Copy</button>
+        </div>
+        <p class="warning">Save this token to edit/delete your paste:</p>
+        <div class="url-row">
+          <input type="text" id="paste-token" readonly>
+          <button class="btn-small" onclick="copyToken()">Copy</button>
+        </div>
+        <div class="result-actions">
+          <a id="view-link" target="_blank" class="btn-primary">View Paste</a>
+          <button class="btn-secondary" onclick="showCreate()">Create Another</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- View Paste -->
+    <div id="view-view" class="card hidden">
+      <div class="paste-header">
+        <div>
+          <h2 id="view-title">Untitled</h2>
+          <span class="meta" id="view-meta"></span>
+        </div>
+        <div class="paste-actions">
+          <a id="raw-link" target="_blank" class="btn-small">Raw</a>
+          <button class="btn-small" onclick="editCurrentPaste()">Edit</button>
+          <button class="btn-danger" onclick="deleteCurrentPaste()">Delete</button>
+        </div>
+      </div>
+      <pre id="view-content" class="paste-content"></pre>
+    </div>
+
+    <!-- Edit Paste -->
+    <div id="edit-view" class="card hidden">
+      <h2>Edit Paste</h2>
+      <label>Token (required)</label>
+      <input type="password" id="edit-token" placeholder="Paste your token here">
+      <label>Title</label>
+      <input type="text" id="edit-title">
+      <label>Content</label>
+      <textarea id="edit-content" rows="15" spellcheck="false"></textarea>
+      <label>Expiration</label>
+      <select id="edit-expires">
+        <option value="never">Never</option>
+        <option value="10m">10 Minutes</option>
+        <option value="1h">1 Hour</option>
+        <option value="1d">1 Day</option>
+        <option value="1w">1 Week</option>
+        <option value="1M">1 Month</option>
+      </select>
+      <button class="btn-primary" onclick="saveEdit()">Save Changes</button>
+      <button class="btn-secondary" onclick="showView()">Cancel</button>
+    </div>
+
+    <!-- Recent Pastes -->
+    <div id="recent-view" class="card hidden">
+      <h2>Recent Pastes</h2>
+      <div id="recent-list"></div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>PyBin - Simple pastebin. No login required. Pastes can expire or last forever.</p>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
